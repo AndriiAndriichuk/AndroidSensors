@@ -13,18 +13,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.andrii.android_sensors.step_count.StepDetector;
+import com.example.andrii.android_sensors.step_count.StepListener;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StepListener {
     TextView edit_x,edit_y,edit_z,edit_light,edit_air_hum,edit_air_temp,edit_pressure,edit_steps,edit_battery;
     SensorManager sensorManager_1, sensorManager_2;
     Sensor sensor_1,sensor_2;
 
     SensorManager sensorManager;
-    Sensor sensorAccel,sensorMagnet,sensorStepC,sensorPressure,sensorTemperature;
+    Sensor  sensorAccel,sensorMagnet,sensorStepC,sensorPressure,sensorTemperature;
 
     boolean isLight = false,isHumidity = false;
     float[] rotationVector = new float[9];
@@ -32,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     float[] valuesAccel = new float[3];
     float[] valuesMagnet = new float[3];
     float[] valuesResult = new float[3];
+
+    private StepDetector simpleStepDetector;
+    private int numSteps = 0;
+    private Sensor accel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
         sensorStepC = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sensorPressure = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         sensorTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+
+        simpleStepDetector = new StepDetector();
+        simpleStepDetector.registerListener(this);
+        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(listener, accel, SensorManager.SENSOR_DELAY_FASTEST);
 
         edit_x = (TextView) findViewById(R.id.edit_x);
         edit_y = (TextView) findViewById(R.id.edit_y);
@@ -97,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.registerListener(listener, sensorStepC, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listener, sensorPressure, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listener, sensorTemperature, SensorManager.SENSOR_DELAY_NORMAL);
-
-
 
         timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -152,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.unregisterListener(listener);
         timer.cancel();
 
+        sensorManager.unregisterListener(listener);
+
 
 
     }
@@ -186,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
                 case Sensor.TYPE_ACCELEROMETER:
                     for (int i=0; i < 3; i++)
                         valuesAccel[i] = event.values[i];
+                    simpleStepDetector.updateAccel(
+                            event.timestamp, event.values[0], event.values[1], event.values[2]);
+
                     break;
                 case Sensor.TYPE_MAGNETIC_FIELD:
                     for (int i=0; i < 3; i++)
@@ -198,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     edit_pressure.setText(" " + res + " мм.рт.ст");
                     break;
                 case Sensor.TYPE_STEP_COUNTER:
-                    edit_steps.setText(/*current_steps*/event.values[0] + " кроків");
+                   // edit_steps.setText(/*current_steps*/event.values[0] + " кроків");
                     break;
                 case Sensor.TYPE_AMBIENT_TEMPERATURE:
                     temp = event.values[0];
@@ -226,5 +241,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void step(long timeNs) {
+        numSteps++;
+        if (numSteps == 1)
+            edit_steps.setText(numSteps + " крок");
+        else if (numSteps >=2 && numSteps <=4)
+            edit_steps.setText(numSteps + " кроки");
+        else
+            edit_steps.setText(numSteps + " кроків");
+    }
 
 }
