@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements StepListener {
     Sensor sensor_1,sensor_2;
 
     SensorManager sensorManager;
-    Sensor  sensorAccel,sensorMagnet,sensorStepC,sensorPressure,sensorTemperature;
+    Sensor  sensorAccel,sensorMagnet,sensorPressure,sensorTemperature;
 
     boolean isLight = false,isHumidity = false;
     float[] rotationVector = new float[9];
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements StepListener {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorMagnet = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        sensorStepC = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sensorPressure = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         sensorTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
@@ -94,7 +94,13 @@ public class MainActivity extends AppCompatActivity implements StepListener {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,0);
             int voltage = intent.getIntExtra("voltage",0);
             int temperature = intent.getIntExtra("temperature",0);
-            edit_battery.setText(level + "%  \nTeмпература : " + temperature/10 + "°C\nНапруга : " + voltage + " mV");
+            String str_res = "";
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                str_res = level + "%  \nTeмпература : " + temperature/10 + "°C\nНапруга : " + voltage + " mV";
+            }else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                str_res = level + "%  , t : " + temperature/10 + "°C, Напруга : " + voltage + " mV";
+            }
+            edit_battery.setText(str_res);
         }
     };
 
@@ -106,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements StepListener {
 
         sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listener, sensorMagnet, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(listener, sensorStepC, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listener, sensorPressure, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listener, sensorTemperature, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -200,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements StepListener {
                         valuesAccel[i] = event.values[i];
                     simpleStepDetector.updateAccel(
                             event.timestamp, event.values[0], event.values[1], event.values[2]);
-
                     break;
                 case Sensor.TYPE_MAGNETIC_FIELD:
                     for (int i=0; i < 3; i++)
@@ -211,9 +215,6 @@ public class MainActivity extends AppCompatActivity implements StepListener {
                     temp *= 0.7500637554192;
                     int res = (int) precise(temp,1);
                     edit_pressure.setText(" " + res + " мм.рт.ст");
-                    break;
-                case Sensor.TYPE_STEP_COUNTER:
-                   // edit_steps.setText(/*current_steps*/event.values[0] + " кроків");
                     break;
                 case Sensor.TYPE_AMBIENT_TEMPERATURE:
                     temp = event.values[0];

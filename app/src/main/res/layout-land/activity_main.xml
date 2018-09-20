@@ -20,8 +20,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_azimuth"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -50,8 +50,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_pitch"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -79,8 +79,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_roll"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -108,8 +108,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_light"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -141,8 +141,8 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="70dp"
                 android:gravity="center"
                 android:scaleType="fitXY"
@@ -170,8 +170,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_humidity"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -200,8 +200,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_pressure"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -229,8 +229,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_steps"
                 android:scaleType="fitXY"
                 android:gravity="center"
@@ -259,8 +259,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_battery"
                 android:scaleType="fitXY"
                 android:gravity="center"
